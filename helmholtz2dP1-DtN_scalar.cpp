@@ -22,7 +22,7 @@ Real cosny(const Point& P, Parameters& pa = defaultParameters)
   else      return sqrt(2./h)*cos(n*pi_*y/h);
 }
 
-Complex alpha(const Point& P, Parameters& pa=defaultParameters){
+Complex alp(const Point& P, Parameters& pa=defaultParameters){
   Real x = P(1), a = pa("a");
   Complex alp = 1-i_;
   if (x<a){
@@ -47,11 +47,18 @@ int main(int argc, char** argv)
 
   Number ny=30, na=Number(ny*a/h),nd=30;
 
+  Function alpha(alp, "alpha", params);
 
-  Rectangle Ra(_xmin =0, _xmax = a, _ymin = 0, _ymax = h, 
+  Rectangle Ra(_xmin =0, _xmax = b, _ymin = 0, _ymax = h, 
                _nnodes=Numbers(na,ny), 
                _domain_name = "Omega", _side_names=Strings ( "Gamma_a" , "Sigma_a" , "Gamma_a" , "Sigma_0" ));
   
+  
+/*  Rectangle Ra(_xmin =0, _xmax = a, _ymin = 0, _ymax = h, 
+               _nnodes=Numbers(na,ny), 
+               _domain_name = "Omega", _side_names=Strings ( "Gamma_a" , "Sigma_a" , "Gamma_a" , "Sigma_0" ));
+  */
+
   Disk D(_center=Point(0.5, 0.5), _radius =r, _nnodes=nd);
   Mesh mail(Ra, _triangle, 1, _gmsh);
   Mesh mesh2d(Ra-D, _triangle, 1, _gmsh);
@@ -68,7 +75,9 @@ int main(int argc, char** argv)
   for (Number n=0; n<N; n++) lambda[n]=sqrt(Complex(k*k-n*n*pi_*pi_/(h*h)));
   TensorKernel tkp(phiP, lambda);
 
-  BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+  //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+  BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
+
   LinearForm fv=intg(sigmaM, Function(gp, params)*v);
   TermMatrix A(auv, "A");
   TermVector B(fv, "B");
