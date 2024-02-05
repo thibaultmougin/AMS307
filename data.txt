@@ -1,0 +1,6 @@
+length 3.
+height 2.
+radius 0.1
+center 0.5 0.4
+k 5.
+hs 0.05
