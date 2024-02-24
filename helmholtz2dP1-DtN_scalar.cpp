@@ -37,15 +37,15 @@ int main(int argc, char** argv)
 {
   init(argc, argv, _lang=en); // mandatory initialization of xlifepp
 
-  Real a =2,r=0.1, b =6.;
+  Real a =2,r=0.1, b =3.;
 
   Parameters params ;
-  Real h=1. , k=5.;
+  Real h=1. , k=10.;
 
 
   params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b");
 
-  Number ny=30, na=Number(ny*a/h),nd=30;
+  Number ny=30, na=Number(ny*b/h),nd=30;
 
   Function alpha(alp, "alpha", params);
 
@@ -62,18 +62,18 @@ int main(int argc, char** argv)
   Space V(_domain=omega, _interpolation=P1, _name="V");
   Unknown u(V, "u"); TestFunction v(u, "v");
 
-  Number N=5;
+  Number N=2;
   Space Sp(_domain=sigmaP, _basis=Function(cosny, params), _dim=N, _name="cos(n*pi*y)");
   Unknown phiP(Sp, "phiP");
   Vector<Complex> lambda(N);
   for (Number n=0; n<N; n++) lambda[n]=sqrt(Complex(k*k-n*n*pi_*pi_/(h*h)));
   TensorKernel tkp(phiP, lambda);
 
-  //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
-  
-  //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+  //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*k*intg(sigmaP, sigmaP, u*v);
 
-  BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
+  BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+  
+  //BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
 
   LinearForm fv=intg(sigmaM, Function(gp, params)*v);
   TermMatrix A(auv, "A");

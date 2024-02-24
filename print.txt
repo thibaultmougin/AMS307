@@ -1,5 +1,5 @@
  XLiFE++ v2.3 (2022-04-22)
- running on 24.feb.2024 at 01h39 on Linux-x86_64 (DESKTOP-K51EPNR), 12 available threads
+ running on 24.feb.2024 at 16h50 on Linux-x86_64 (DESKTOP-K51EPNR), 12 available threads
 
 Machine epsilon                     theEpsilon_= 2.22045e-16
 Greatest real number (real_t)       theRealMax_= 1.79769e+308
@@ -12,6 +12,6 @@ Greatest dimension (dimen_t)         theDimMax_= 65535
 -------------------------------------------------------------
 
 
-DoF numbering optimisation for space 'V', skyline storage size before optimisation : 1749200, after optimisation : 107839
-TermMatrix A computed, size 1995 X 1995:   SuTermMatrix A_u_v :   block (v, u) -> matrix 1995 X 1995 of complex scalar in row/column_compressed sparse (csr,csc) (13381 coefficients)
+DoF numbering optimisation for space 'V', skyline storage size before optimisation : 4643941, after optimisation : 184645
+computing FE term (-0,-1) * intg_Sigma_a intg_Sigma_a (u * TK) * v, using 12 threads : TermMatrix A computed, size 3209 X 3209:   SuTermMatrix A_u_v :   block (v, u) -> matrix 3209 X 3209 of complex scalar in symmetric_compressed sparse (csr,csc) (12950 coefficients)
 
