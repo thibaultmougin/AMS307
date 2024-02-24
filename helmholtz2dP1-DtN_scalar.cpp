@@ -24,7 +24,7 @@ Real cosny(const Point& P, Parameters& pa = defaultParameters)
 
 Complex alp(const Point& P, Parameters& pa=defaultParameters){
   Real x = P(1), a = pa("a");
-  Complex alp = 1-i_;
+  Complex alp = 1-1*i_;
   if (x<a){
       return 1.;
   }
@@ -37,10 +37,10 @@ int main(int argc, char** argv)
 {
   init(argc, argv, _lang=en); // mandatory initialization of xlifepp
 
-  Real a =2,r=0.1, b =3.;
+  Real a =2,r=0.1, b =6.;
 
   Parameters params ;
-  Real h=1. , k=10.;
+  Real h=1. , k=5.;
 
 
   params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b");
@@ -53,12 +53,6 @@ int main(int argc, char** argv)
                _nnodes=Numbers(na,ny), 
                _domain_name = "Omega", _side_names=Strings ( "Gamma_a" , "Sigma_a" , "Gamma_a" , "Sigma_0" ));
   
-  
-/*  Rectangle Ra(_xmin =0, _xmax = a, _ymin = 0, _ymax = h, 
-               _nnodes=Numbers(na,ny), 
-               _domain_name = "Omega", _side_names=Strings ( "Gamma_a" , "Sigma_a" , "Gamma_a" , "Sigma_0" ));
-  */
-
   Disk D(_center=Point(0.5, 0.5), _radius =r, _nnodes=nd);
   Mesh mail(Ra, _triangle, 1, _gmsh);
   Mesh mesh2d(Ra-D, _triangle, 1, _gmsh);
@@ -76,7 +70,10 @@ int main(int argc, char** argv)
   TensorKernel tkp(phiP, lambda);
 
   //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
-  BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
+  
+  BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+
+  //BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
 
   LinearForm fv=intg(sigmaM, Function(gp, params)*v);
   TermMatrix A(auv, "A");
@@ -84,6 +81,14 @@ int main(int argc, char** argv)
 
   TermVector U = directSolve(A, B);
   saveToFile("U", U, vtu);
+
+/*
+  TermMatrix M( intg (Omega, u*v ) ) ;
+  TermVector Uex(u , Omega, uex ) ;
+  TermVector E=U-Uex ;
+  Real er=sqrt ( abs ((M*E|E ) ) ) ;
+  std::cout<<"L2 error = "<<er<<eol ;
+  */
 
   return 0;
 }
