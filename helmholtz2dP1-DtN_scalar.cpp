@@ -38,12 +38,14 @@ int main(int argc, char** argv)
   init(argc, argv, _lang=en); // mandatory initialization of xlifepp
 
   Options opts ; 
+  opts.add ( "a", 2. );
+
   opts.add ( "b", 3. );
   opts.add ( "k", 10.) ; opts.add ( "ny", 30);
   opts.add("N",5);
   opts.parse ( "data.txt" ) ;
 
-  Real a =2,r=0.1, b =opts("b");
+  Real a =opts("a"),r=0.1, b =opts("b");
 
   Parameters params ;
   Real h=1. , k=opts("k");
@@ -52,11 +54,11 @@ int main(int argc, char** argv)
   params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b");
 
   Number ny = opts("ny");
-  Number na=Number(ny*b/h),nd=30;
+  Number na=Number(ny*a/h),nd=30;
 
   Function alpha(alp, "alpha", params);
 
-  Rectangle Ra(_xmin =0, _xmax = b, _ymin = 0, _ymax = h, 
+  Rectangle Ra(_xmin =0, _xmax = a, _ymin = 0, _ymax = h, 
                _nnodes=Numbers(na,ny), 
                _domain_name = "Omega", _side_names=Strings ( "Gamma_a" , "Sigma_a" , "Gamma_a" , "Sigma_0" ));
   
@@ -65,11 +67,17 @@ int main(int argc, char** argv)
   Mesh mesh2d(Ra-D, _triangle, 1, _gmsh);
   Domain omega=mesh2d.domain("Omega");
   Domain sigmaP=mesh2d.domain("Sigma_a"), sigmaM=mesh2d.domain("Sigma_0");
+  
+  cpuTime("mesh");
 
+  std::cout<< std::endl ; 
+  
   Space V(_domain=omega, _interpolation=P1, _name="V");
   Unknown u(V, "u"); TestFunction v(u, "v");
 
   Number N=opts("N");
+
+  std::cout << std::endl << "k = " << k << ", N = " << N << ", a = " << a << ", b = " << b << ", ny = " << ny << std::endl;
   Space Sp(_domain=sigmaP, _basis=Function(cosny, params), _dim=N, _name="cos(n*pi*y)");
   Unknown phiP(Sp, "phiP");
   Vector<Complex> lambda(N);
@@ -85,8 +93,15 @@ int main(int argc, char** argv)
   LinearForm fv=intg(sigmaM, Function(gp, params)*v);
   TermMatrix A(auv, "A");
   TermVector B(fv, "B");
+  
+  cpuTime("assemblage");
+  std::cout<< std::endl ; 
 
   TermVector U = directSolve(A, B);
+
+  cpuTime("solver");
+  std::cout<< std::endl ; 
+
   saveToFile("U", U, vtu);
 
 /*
