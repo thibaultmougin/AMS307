@@ -71,9 +71,9 @@ int main(int argc, char** argv)
 
   //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
   
-  BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+  //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
 
-  //BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
+  BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
 
   LinearForm fv=intg(sigmaM, Function(gp, params)*v);
   TermMatrix A(auv, "A");
