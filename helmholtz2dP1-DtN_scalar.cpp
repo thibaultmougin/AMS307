@@ -37,15 +37,22 @@ int main(int argc, char** argv)
 {
   init(argc, argv, _lang=en); // mandatory initialization of xlifepp
 
-  Real a =2,r=0.1, b =3.;
+  Options opts ; 
+  opts.add ( "b", 3. );
+  opts.add ( "k", 10.) ; opts.add ( "ny", 30);
+  opts.add("N",5);
+  opts.parse ( "data.txt" ) ;
+
+  Real a =2,r=0.1, b =opts("b");
 
   Parameters params ;
-  Real h=1. , k=10.;
+  Real h=1. , k=opts("k");
 
 
   params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b");
 
-  Number ny=30, na=Number(ny*b/h),nd=30;
+  Number ny = opts("ny");
+  Number na=Number(ny*b/h),nd=30;
 
   Function alpha(alp, "alpha", params);
 
@@ -62,7 +69,7 @@ int main(int argc, char** argv)
   Space V(_domain=omega, _interpolation=P1, _name="V");
   Unknown u(V, "u"); TestFunction v(u, "v");
 
-  Number N=2;
+  Number N=opts("N");
   Space Sp(_domain=sigmaP, _basis=Function(cosny, params), _dim=N, _name="cos(n*pi*y)");
   Unknown phiP(Sp, "phiP");
   Vector<Complex> lambda(N);
