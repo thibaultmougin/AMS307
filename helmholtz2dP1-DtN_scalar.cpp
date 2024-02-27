@@ -1,6 +1,8 @@
 #include "xlife++.h"
 using namespace xlifepp;
+
 //inputs[1].PointData["real_part_term_u"]-inputs[0].PointData["real_part_term_u"]
+
 // data on sigma-
 Complex gp(const Point& P, Parameters& pa = defaultParameters)
 {

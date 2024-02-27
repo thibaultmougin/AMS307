@@ -1,5 +1,5 @@
 Info    : Running '/usr/bin/gmsh -3 -format msh2 xlifepp_script.geo -o xlifepp_script.msh' [Gmsh 4.8.4, 1 node, max. 1 thread]
-Info    : Started on Tue Feb 27 23:00:04 2024
+Info    : Started on Tue Feb 27 23:41:12 2024
 Info    : Reading 'xlifepp_script.geo'...
 Info    : Reading '/home/tmougin/xlifepp-sources-v2.3-2022-04-22/etc/gmsh/xlifepp_macros.geo'...
 Info    : Done reading '/home/tmougin/xlifepp-sources-v2.3-2022-04-22/etc/gmsh/xlifepp_macros.geo'
@@ -9,18 +9,18 @@ Info    : [  0%] Meshing curve 1 (Line)
 Info    : [ 30%] Meshing curve 2 (Line)
 Info    : [ 50%] Meshing curve 3 (Line)
 Info    : [ 80%] Meshing curve 4 (Line)
-Info    : Done meshing 1D (Wall 0.0001887s, CPU 0.000158s)
+Info    : Done meshing 1D (Wall 0.0001923s, CPU 0.000193s)
 Info    : Meshing 2D...
 Info    : Meshing surface 5 (Plane, Frontal-Delaunay)
-Info    : Done meshing 2D (Wall 0.0277214s, CPU 0.027721s)
+Info    : Done meshing 2D (Wall 0.0280455s, CPU 0.028044s)
 Info    : Meshing 3D...
-Info    : Done meshing 3D (Wall 2.99e-05s, CPU 3e-05s)
+Info    : Done meshing 3D (Wall 3.37e-05s, CPU 3.4e-05s)
 Info    : 1412 nodes 2826 elements
 Info    : Writing 'xlifepp_script.msh'...
 Info    : Done writing 'xlifepp_script.msh'
-Info    : Stopped on Tue Feb 27 23:00:04 2024 (From start: Wall 0.118998s, CPU 0.135039s)
+Info    : Stopped on Tue Feb 27 23:41:12 2024 (From start: Wall 0.116855s, CPU 0.153487s)
 Info    : Running '/usr/bin/gmsh -3 -format msh2 xlifepp_script.geo -o xlifepp_script.msh' [Gmsh 4.8.4, 1 node, max. 1 thread]
-Info    : Started on Tue Feb 27 23:00:04 2024
+Info    : Started on Tue Feb 27 23:41:12 2024
 Info    : Reading 'xlifepp_script.geo'...
 Info    : Reading '/home/tmougin/xlifepp-sources-v2.3-2022-04-22/etc/gmsh/xlifepp_macros.geo'...
 Info    : Done reading '/home/tmougin/xlifepp-sources-v2.3-2022-04-22/etc/gmsh/xlifepp_macros.geo'
@@ -34,13 +34,13 @@ Info    : [ 50%] Meshing curve 6 (Ellipse)
 Info    : [ 70%] Meshing curve 7 (Ellipse)
 Info    : [ 80%] Meshing curve 8 (Ellipse)
 Info    : [ 90%] Meshing curve 9 (Ellipse)
-Info    : Done meshing 1D (Wall 0.0004819s, CPU 0.000482s)
+Info    : Done meshing 1D (Wall 0.0004348s, CPU 0.000435s)
 Info    : Meshing 2D...
 Info    : Meshing surface 5 (Plane, Frontal-Delaunay)
-Info    : Done meshing 2D (Wall 0.0652766s, CPU 0.065276s)
+Info    : Done meshing 2D (Wall 0.0657247s, CPU 0.065724s)
 Info    : Meshing 3D...
-Info    : Done meshing 3D (Wall 3.07e-05s, CPU 3.1e-05s)
+Info    : Done meshing 3D (Wall 3.23e-05s, CPU 3.3e-05s)
 Info    : 3164 nodes 6335 elements
 Info    : Writing 'xlifepp_script.msh'...
 Info    : Done writing 'xlifepp_script.msh'
-Info    : Stopped on Tue Feb 27 23:00:04 2024 (From start: Wall 0.227492s, CPU 0.246215s)
+Info    : Stopped on Tue Feb 27 23:41:12 2024 (From start: Wall 0.228742s, CPU 0.263103s)
