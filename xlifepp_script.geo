@@ -4,16 +4,16 @@ h0=0.10000000000000001;
 Call xlifepp_init;
 l=0;
 x1=0; y1=0; z1=0;
-x2=1; y2=0; z2=0;
-x3=1; y3=1; z3=0;
+x2=2; y2=0; z2=0;
+x3=2; y3=1; z3=0;
 x4=0; y4=1; z4=0;
 h1=h0; h2=h0; h3=h0; h4=h0;
 
 Call xlifepp_Quadrangle;
 
-Transfinite Line {L_1} = 30;
+Transfinite Line {L_1} = 45;
 Transfinite Line {L_2} = 30;
-Transfinite Line {L_3} = 30;
+Transfinite Line {L_3} = 45;
 Transfinite Line {L_4} = 30;
 domain_1={L_1[],L_3[]};
 domain_2={L_4[]};

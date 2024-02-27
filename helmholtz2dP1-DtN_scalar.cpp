@@ -22,16 +22,42 @@ Real cosny(const Point& P, Parameters& pa = defaultParameters)
   else      return sqrt(2./h)*cos(n*pi_*y/h);
 }
 
-Complex alp(const Point& P, Parameters& pa=defaultParameters){
+
+
+Matrix<Complex> alpM(const Point& P, Parameters& pa=defaultParameters){
   Real x = P(1), a = pa("a");
-  Complex alp = 1-1*i_;
+  Complex alpha = pa("alpha");
+
+  Vector<Complex> diago(2,1.);
+
   if (x<a){
-      return 1.;
+
+      Matrix<Complex> M(diago);
+
+      return M;
   }
   else{
-    return alp;
+    diago(1)=alpha;
+    diago(2)=1./alpha;
+    Matrix<Complex> M(diago);
+    return M;
   }
 }
+
+Complex alpS(const Point& P, Parameters& pa=defaultParameters){
+  Real x = P(1), a = pa("a");
+  Complex alpha = pa("alpha");
+
+  if (x<a){
+
+      return 1;
+  }
+  else{
+    return 1./alpha;
+  }
+}
+
+
 
 int main(int argc, char** argv)
 {
@@ -50,15 +76,17 @@ int main(int argc, char** argv)
   Parameters params ;
   Real h=1. , k=opts("k");
 
+  Complex alpha = 0.25*(1-i_);
 
-  params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b");
+  params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b") << Parameter (alpha , "alpha" );
 
   Number ny = opts("ny");
   Number na=Number(ny*a/h),nd=30;
 
-  Function alpha(alp, "alpha", params);
+  Function alphaM(alpM, "alphaM", params);
+  Function alphaS(alpS,"alphaS",params);
 
-  Rectangle Ra(_xmin =0, _xmax = a, _ymin = 0, _ymax = h, 
+  Rectangle Ra(_xmin =0, _xmax = b, _ymin = 0, _ymax = h, 
                _nnodes=Numbers(na,ny), 
                _domain_name = "Omega", _side_names=Strings ( "Gamma_a" , "Sigma_a" , "Gamma_a" , "Sigma_0" ));
   
@@ -79,16 +107,27 @@ int main(int argc, char** argv)
 
   std::cout << std::endl << "k = " << k << ", N = " << N << ", a = " << a << ", b = " << b << ", ny = " << ny << std::endl;
   Space Sp(_domain=sigmaP, _basis=Function(cosny, params), _dim=N, _name="cos(n*pi*y)");
+
+
+  
   Unknown phiP(Sp, "phiP");
   Vector<Complex> lambda(N);
+
   for (Number n=0; n<N; n++) lambda[n]=sqrt(Complex(k*k-n*n*pi_*pi_/(h*h)));
+  /*
+  for (Number n=0; n<N; n++) {
+    Complex betan = sqrt(Complex(k*k-n*n*pi_*pi_/(h*h)));
+    lambda[n]=betan*(exp(i_*betan*(b-a)));
+    }
+    */
+
   TensorKernel tkp(phiP, lambda);
 
   //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*k*intg(sigmaP, sigmaP, u*v);
 
-  BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
+  //BilinearForm auv = intg(omega, grad(u)|grad(v)) - k*k*intg(omega, u*v) - i_*intg(sigmaP, sigmaP, u*tkp*v);
   
-  //BilinearForm auv = intg(omega, alpha*grad(u)|grad(v)) - k*k*intg(omega, u*v);
+  BilinearForm auv = intg(omega, (alphaM*grad(u))|grad(v)) - k*k*intg(omega, alphaS*u*v);
 
   LinearForm fv=intg(sigmaM, Function(gp, params)*v);
   TermMatrix A(auv, "A");
