@@ -1,6 +1,6 @@
 #include "xlife++.h"
 using namespace xlifepp;
-
+//inputs[1].PointData["real_part_term_u"]-inputs[0].PointData["real_part_term_u"]
 // data on sigma-
 Complex gp(const Point& P, Parameters& pa = defaultParameters)
 {
@@ -69,6 +69,7 @@ int main(int argc, char** argv)
   opts.add ( "b", 3. );
   opts.add ( "k", 10.) ; opts.add ( "ny", 30);
   opts.add("N",5);
+  opts.add("mod_alpha",0.25);
   opts.parse ( "data.txt" ) ;
 
   Real a =opts("a"),r=0.1, b =opts("b");
@@ -76,7 +77,7 @@ int main(int argc, char** argv)
   Parameters params ;
   Real h=1. , k=opts("k");
 
-  Complex alpha = 0.25*(1-i_);
+  Complex alpha = opts("mod_alpha")*(1-i_);
 
   params << Parameter (h , "h")<< Parameter (k , "k" ) << Parameter(a,"a") << Parameter(b,"b") << Parameter (alpha , "alpha" );
 
@@ -105,7 +106,7 @@ int main(int argc, char** argv)
 
   Number N=opts("N");
 
-  std::cout << std::endl << "k = " << k << ", N = " << N << ", a = " << a << ", b = " << b << ", ny = " << ny << std::endl;
+  std::cout << std::endl << "k = " << k << ", N = " << N << ", a = " << a << ", b = " << b << ", ny = " << ny << ", mod_alpha = " << opts("mod_alpha") << std::endl;
   Space Sp(_domain=sigmaP, _basis=Function(cosny, params), _dim=N, _name="cos(n*pi*y)");
 
 

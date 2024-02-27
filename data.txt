@@ -3,3 +3,4 @@ b 2.
 k 10.
 ny 30
 N 16
+mod_alpha 0.5
